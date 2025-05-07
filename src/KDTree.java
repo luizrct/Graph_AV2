@@ -1,8 +1,10 @@
+import java.util.Comparator;
+import java.util.List;
+
 public class KDTree {
 
     private class Node{
         private Point p;
-        private Node Pai;
         private Node FilhoEsquerdo;
         private Node FilhoDireito;
 
@@ -14,66 +16,32 @@ public class KDTree {
     }
 
     private Node start;
-    private int nElementos;
-    private boolean comparaX;
 
 
     //Construtor
-    public KDTree(){
-        start = null;
-        nElementos = 0;
-        comparaX = true;
+    public KDTree(List<Point> pontos){
+        start = buildTree(pontos, 0);
     }
 
-    public boolean estaVazia(){
-        return nElementos == 0;
-    }
-
-    public int quantidadeElementos(){
-        return nElementos;
-    }
-
-    public void inserePonto(Point p){
-        if(nElementos == 0){
-            start = new Node(p);
-        }else{
-            Node proximo = start;
-            boolean esquerda = false;
-            while(true){
-                //checar a direção
-                if(comparaX){
-                    if(p.x() > proximo.p.x()){
-                        esquerda = false;
-                    }else if(p.x() < proximo.p.x()){
-                        esquerda = true;
-                    }
-                }else{
-                    if(p.y() > proximo.p.y()){
-                        esquerda = false;
-                    }else if(p.y() < proximo.p.y()){
-                        esquerda = true;
-                    }
-                }
-
-                if(esquerda){
-                    if(proximo.FilhoEsquerdo == null){
-                        proximo.FilhoEsquerdo = new Node(p);
-                        break;
-                    }else{
-                        proximo = proximo.FilhoEsquerdo;
-                    }
-                }else{
-                    if(proximo.FilhoDireito == null){
-                        proximo.FilhoDireito = new Node(p);
-                        break;
-                    }else{
-                        proximo = proximo.FilhoDireito;
-                    }
-                }
-
-            }
+    //construção recursiva da arvore KDTree
+    public Node buildTree(List<Point> pontos, int profundidade){
+        if(pontos.isEmpty()){
+            return null;
         }
-        nElementos++;
+        int axis =  profundidade % 2;
+        if(axis == 0){
+            pontos.sort(Comparator.comparing(p -> p.x()));
+        }else{
+            pontos.sort(Comparator.comparing(p -> p.y()));
+        }
+        int mediana = pontos.size() / 2;
+
+        Node no = new Node(pontos.get(mediana));
+
+        no.FilhoEsquerdo = buildTree(pontos.subList(0, mediana), profundidade + 1);
+        no.FilhoDireito = buildTree(pontos.subList(mediana+1, pontos.size()), profundidade + 1);
+
+        return no;
     }
 
 }
