@@ -101,7 +101,40 @@ public class Tour {
 
     // insere p usando a heurística do menor aumento
     public void insertSmallest(Point p) {
-        // A ser implementado
+        //Instancia do nó que será inserido entre dois nós existentes
+        Node newNode = new Node();
+        newNode.p = p;
+
+        //Caso não haja um valor inicial, deve se referenciar o ponto de inicio ao novo nó instanciado
+        //para manter a estrutura de ciclo(circular) referencia-se a si mesmo
+        if(start.p == null){
+            start = newNode;
+            start.next = start;
+            return;
+        }
+        //Nó que deve referenciar o nó de menor aumento a ser encontrada, por enquanto aponta pra null
+        Node bestPosition = null;
+        // custo minimo inicializado com maior valor possível para minimização
+        double minCost = Double.POSITIVE_INFINITY;
+
+        Node current = this.start;
+        do {
+            //nó next referencia o pŕoximo da lista encadeada
+            Node next = current.next;
+            //armazenamento do menor aumento baseado na ideia da desigualdade triangular(citado por karubbi)
+            double increase = current.p.distanceTo(p) + p.distanceTo(next.p) - current.p.distanceTo(next.p);
+            if (increase < minCost) {
+                minCost = increase;
+                bestPosition = current;
+            }
+            //atualiza nó atual para próx iteração
+            current = current.next;
+        } while (current != this.start);//ponto de parada
+
+        // Inserir p após o melhor nó encontrado
+        newNode.next = bestPosition.next;
+        bestPosition.next = newNode;
+
     }
 
     // testa esta classe chamando todos os construtores e métodos de instância
@@ -130,8 +163,10 @@ public class Tour {
         StdDraw.setYscale(0, 6);
 
         Point e = new Point(5.0, 6.0);
-        squareTour.insertNearest(e);
+        //squareTour.insertNearest(e);
         squareTour.insertSmallest(e);
+        StdOut.println("Comprimento depois: " + squareTour.length());
+        StdOut.println("Tour atualizado:\n" + squareTour);
         squareTour.draw();
     }
 }
