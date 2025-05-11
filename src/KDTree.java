@@ -34,6 +34,7 @@ public class KDTree {
         }else{
             pontos.sort(Comparator.comparing(p -> p.y()));
         }
+
         int mediana = pontos.size() / 2;
 
         Node no = new Node(pontos.get(mediana));
@@ -43,5 +44,6 @@ public class KDTree {
 
         return no;
     }
+
 
 }

@@ -25,17 +25,10 @@ public class Tour {
     // cria o ciclo de 4 pontos a->b->c->d->a (para depuração)
     public Tour(Point a, Point b, Point c, Point d) {
         start = new Node();
-        Node b1 = new Node();
-        Node c1 = new Node();
-        Node d1 = new Node();
-        start.p = a;
-        b1.p = b;
-        c1.p = c;
-        d1.p = d;
-        start.next = b1;
-        b1.next = c1;
-        c1.next = d1;
-        d1.next = start;
+        insertNearest(a);
+        insertNearest(b);
+        insertNearest(c);
+        insertNearest(d);
     }
 
     // retorna o número de pontos neste ciclo
@@ -94,9 +87,38 @@ public class Tour {
         }
     }
 
+
+
     // insere p usando a heurística do vizinho mais próximo
+    //linear
     public void insertNearest(Point p) {
-        // A ser implementado
+        //verifica se já existe algum ponto na lista encadeada
+       if(start.p == null){
+           start.p = p;
+           start.next = start;
+           return;
+       }
+
+       //percorre todos os nós que já estão no ciclo para saber qual é o mais próximo
+       Node current = start;
+       Node maisProximo = new Node();
+       do{
+           if(maisProximo.p != null){
+               if(p.distanceTo(current.p) < p.distanceTo(maisProximo.p)){
+                   maisProximo = current;
+               }
+           }else{
+               maisProximo = current;
+           }
+           current = current.next;
+       }while (!current.equals(start));
+
+       //inserindo o novo ponto no ciclo
+       Node t1 = new Node();
+       t1.p = p;
+       Node t2 = maisProximo.next;
+       maisProximo.next = t1;
+       t1.next = t2;
     }
 
     // insere p usando a heurística do menor aumento
@@ -126,12 +148,14 @@ public class Tour {
         // imprime o ciclo na saída padrão
         StdOut.println(squareTour);
 
-        StdDraw.setXscale(0, 6);
+        /*StdDraw.setXscale(0, 6);
         StdDraw.setYscale(0, 6);
 
         Point e = new Point(5.0, 6.0);
         squareTour.insertNearest(e);
-        squareTour.insertSmallest(e);
+        //squareTour.insertSmallest(e);
         squareTour.draw();
+
+         */
     }
 }
