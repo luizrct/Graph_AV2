@@ -63,4 +63,3 @@ Comente se o valor de \(b\) encontrado é coerente com a análise teórica da co
 | 40000     | 9.067                          | 9.335                   |
 | 80000     | 57.385                         | 43.2                    |
 | 160000    | 500.77                         | 180.323                 |
-|32000 |
