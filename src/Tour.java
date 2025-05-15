@@ -121,6 +121,8 @@ public class Tour {
        t1.next = t2;
     }
 
+
+
     // insere p usando a heurística do menor aumento
     public void insertSmallest(Point p) {
         //Instancia do nó que será inserido entre dois nós existentes
