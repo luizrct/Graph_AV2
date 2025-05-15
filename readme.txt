@@ -32,7 +32,7 @@ Considere a complexidade das operações de inserção e remoção de pontos.
 
 Resposta:
 Em um vetor a complexidade de inserção de um ponto é O(n), já que para inserir um ponto
-entre 2 pontos que já existem, teria que realocar todos os outros pontos presentes no vetor.
+entre 2 pontos que já existem, teria que realocar todos os outros pontos presentes em um dos lados do vetor.
 Já na lista encadeada, o tempo de inserção e remoção é constante.
 
 
